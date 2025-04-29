@@ -14,10 +14,25 @@ const todoCounter = new TodoCounter(initialTodos, ".counter__text");
 const newTodoValidator = new FormValidator(validationConfig, addTodoForm);
 newTodoValidator.enableValidation();
 
+const handleCheck = (todoData) => {
+  todoCounter.updateCompleted(todoData.completed);
+};
+
+const handleDelete = (todoData) => {
+  todoCounter.updateTotal(false);
+  if (todoData.completed) {
+    todoCounter.updateCompleted(false);
+  }
+};
+
 const generateTodo = (data) => {
-  const todo = new Todo(data, "#todo-template", todoCounter);
+  const todo = new Todo(data, "#todo-template", {
+    handleCheck,
+    handleDelete,
+  });
   return todo.getView();
 };
+
 const section = new Section({
   items: initialTodos,
   renderer: (item) => {
